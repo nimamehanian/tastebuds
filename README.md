@@ -23,3 +23,13 @@ Product Roadmap:
 ⬜️ Hook up tastebud groupings to a lambda-cron function so it automatically notifies user of their proposed group a couple days before they go to lunch. Then remove the button to trigger grouping. There, ultimately, shouldn't be any user intervention for triggering or choosing groups.
 
 ⬜️ Clicking/tapping on tastebud image brings up a tooltip of their social media profiles so you can get to know them a bit before going out to lunch.
+
+### To run locally
+
+```
+git clone git@github.com:nimamehanian/tastebuds.git
+cd ./tastebuds
+npm install
+npm start
+```
+Then go to the URL `localhost:8080` in Chrome
