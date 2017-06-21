@@ -107,8 +107,8 @@ export const load = () => (
       setTimeout(() =>
         dispatch(loadResolve(users.val())
       ), 2000);
-      // Timeout unneeded. Just for effect. For now.
-      // Because the spinner is too pretty not to be enjoyed
+      // Timeout, for effect, because the spinner
+      // is too pretty not to be enjoyed
       // for a couple seconds ;p
     });
   }

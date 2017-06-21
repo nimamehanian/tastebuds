@@ -27,7 +27,7 @@ class App extends Component {
         <div className="app">
           <Header />
           <div className="groups">
-            {!this.props.lunchGroups.length ?
+            {!this.props.groupsAreResolved ?
               <div className="empty-view">
                 <div>Hey Rockstar!</div>
                 <div>Ready to grub?</div>
