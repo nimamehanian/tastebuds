@@ -1,15 +1,12 @@
 import _ from 'lodash';
 import {
-  USERS_GATHER_REQUEST,
   USERS_GATHER_RESOLVE,
-  // USERS_GATHER_FAILURE,
   USERS_ADD_REQUEST,
   // USERS_ADD_RESOLVE,
   USERS_REMOVE_REQUEST,
   // USERS_REMOVE_RESOLVE,
   USERS_LOAD_REQUEST,
   USERS_LOAD_RESOLVE
-  // USERS_LOAD_FAILURE
 } from './actionTypes';
 import { DB } from '../../firebase';
 
@@ -84,45 +81,49 @@ function generateGroups(t) {
   return lunchGroups;
 }
 
+// FORM LUNCH GROUPS
 export const gather = teams => (
   (dispatch) => {
-    dispatch({ type: USERS_GATHER_REQUEST });
     const lunchGroups = generateGroups(teams);
-    dispatch({ type: USERS_GATHER_RESOLVE, lunchGroups });
-    // dispatch({ type: USERS_GATHER_FAILURE });
+    dispatch({
+      type: USERS_GATHER_RESOLVE,
+      groupsAreResolved: true,
+      lunchGroups,
+    });
   }
 );
 
 // GET
 const loadRequest = () => ({ type: USERS_LOAD_REQUEST });
-const loadResolve = () => ({
+const loadResolve = teams => ({
   type: USERS_LOAD_RESOLVE,
   isDataLoaded: true,
+  teams,
 });
-// const loadFailure = () => ({ type: APP_LOAD_FAILURE });
 export const load = () => (
   (dispatch) => {
     dispatch(loadRequest());
-    DB.ref('users/').once('value', (users) => {
+    DB.ref('teams/').once('value', (users) => {
       setTimeout(() =>
-        dispatch(loadResolve(
-          users.val()
-        )), 500
-      );
+        dispatch(loadResolve(users.val())
+      ), 2000);
+      // Timeout unneeded. Just for effect. For now.
+      // Because the spinner is too pretty not to be enjoyed
+      // for a couple seconds ;p
     });
   }
 );
 
 export const addUser = () => (
   (dispatch) => {
-    // TODO
     dispatch({ type: USERS_ADD_REQUEST });
+    // TODO
   }
 );
 
 export const removeUser = () => (
   (dispatch) => {
-    // TODO
     dispatch({ type: USERS_REMOVE_REQUEST });
+    // TODO
   }
 );

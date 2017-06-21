@@ -15,8 +15,7 @@ class App extends Component {
   }
 
   gather() {
-    console.log(this.props.teams);
-    // this.props.gather(this.props.teams);
+    this.props.gather(this.props.teams);
   }
 
   render() {
@@ -28,6 +27,17 @@ class App extends Component {
         <div className="app">
           <Header />
           <div className="groups">
+            {!this.props.lunchGroups.length ?
+              <div className="empty-view">
+                <div>Hey Rockstar!</div>
+                <div>Ready to grub?</div>
+                <div>Tap below.</div>
+                <i
+                  className="ion-ios-arrow-thin-down"
+                  style={{ fontSize: '128px' }}
+                />
+              </div> : null
+            }
             {this.props.lunchGroups.map((group, index) => (
               <Group group={group} key={`group_${index + 1}`} />
             ))}

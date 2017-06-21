@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
-// import {
-//
-// } from './actionTypes';
 import {
+  load as loadAction,
   gather as gatherAction,
   addUser as addUserAction,
   removeUser as removeUserAction
@@ -11,11 +9,16 @@ import App from './App';
 
 const mapStateToProps = state => ({
   teams: state.app.teams,
+  isDataLoaded: state.app.isDataLoaded,
   lunchGroups: state.app.lunchGroups,
   groupsAreResolved: state.app.groupsAreResolved,
 });
 
 const mapDispatchToProps = dispatch => ({
+  load() {
+    dispatch(loadAction());
+  },
+
   gather(teams) {
     dispatch(gatherAction(teams));
   },
