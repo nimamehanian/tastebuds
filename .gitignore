@@ -4,4 +4,5 @@ keys.js
 .firebaserc
 database.rules.json
 firebase.json
+package-lock.json
 .DS_Store

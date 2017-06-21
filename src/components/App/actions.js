@@ -83,14 +83,17 @@ function generateGroups(t) {
 
 // FORM LUNCH GROUPS
 export const gather = teams => (
-  (dispatch) => {
-    const lunchGroups = generateGroups(teams);
-    dispatch({
-      type: USERS_GATHER_RESOLVE,
-      groupsAreResolved: true,
-      lunchGroups,
-    });
-  }
+  dispatch => (
+    new Promise(resolve => resolve(generateGroups(teams)))
+      .then(lunchGroups => (
+        dispatch({
+          type: USERS_GATHER_RESOLVE,
+          groupsAreResolved: true,
+          lunchGroups,
+        })
+      )
+    )
+  )
 );
 
 // GET
