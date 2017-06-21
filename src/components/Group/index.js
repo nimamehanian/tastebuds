@@ -30,7 +30,6 @@ class Group extends Component {
       <div className="group">
         {this.props.group.map((person, idx) => {
           const [firstName] = person.name.split(' ');
-          console.log(firstName);
           return (
             <div
               className="person"
