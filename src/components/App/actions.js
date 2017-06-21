@@ -9,6 +9,7 @@ import {
   USERS_LOAD_RESOLVE
 } from './actionTypes';
 import { DB } from '../../firebase';
+import originalCollection from '../../teams';
 
 function generateGroups(t) {
   let lunchGroups = [];
@@ -22,10 +23,20 @@ function generateGroups(t) {
     peopleRemaining = _(teams).flattenDeep().value().length;
   }
 
+  if (peopleRemaining <= 5) {
+    return [_(teams).flattenDeep().value()];
+  }
+
+  if (peopleRemaining >= 6 && peopleRemaining <= 10) {
+    return _(_(teams).flattenDeep()).chunk(
+      peopleRemaining % 2 === 0 ? peopleRemaining / 2 : 4
+    ).value();
+  }
+
   while (peopleRemaining) {
     for (const team of teams) {
       // Choose a person, at random, from the current team
-      const idx = _.random(team.length - 1);
+      const idx = team.length > 1 ? _.random(team.length - 1) : 0;
 
       // We have three states of operation, depending on
       // the amount of teams remaining to dispurse into
@@ -51,6 +62,7 @@ function generateGroups(t) {
         group = [...group, team[idx]];
         team.splice(idx, 1);
         sync(teams);
+        console.log(peopleRemaining);
         // If lunch group is full, yield it, and reset
         if (group.length === 3) {
           lunchGroups = [...lunchGroups, group];
@@ -97,7 +109,7 @@ export const gather = teams => (
 );
 
 // GET
-const loadRequest = () => ({ type: USERS_LOAD_REQUEST });
+// const loadRequest = () => ({ type: USERS_LOAD_REQUEST });
 const loadResolve = teams => ({
   type: USERS_LOAD_RESOLVE,
   isDataLoaded: true,
@@ -105,15 +117,16 @@ const loadResolve = teams => ({
 });
 export const load = () => (
   (dispatch) => {
-    dispatch(loadRequest());
-    DB.ref('teams/').once('value', (users) => {
-      setTimeout(() =>
-        dispatch(loadResolve(users.val())
-      ), 2000);
-      // Timeout, for effect, because the spinner
-      // is too pretty not to be enjoyed
-      // for a couple seconds ;p
-    });
+    // dispatch(loadRequest());
+    dispatch(loadResolve(originalCollection));
+    // DB.ref('teams/').once('value', (users) => {
+    //   setTimeout(() =>
+    //     dispatch(loadResolve(users.val())
+    //   ), 2000);
+    //   // Timeout, for effect, because the spinner
+    //   // is too pretty not to be enjoyed
+    //   // for a couple seconds ;p
+    // });
   }
 );
 
