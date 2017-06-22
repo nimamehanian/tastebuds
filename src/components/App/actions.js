@@ -22,10 +22,20 @@ function generateGroups(t) {
     peopleRemaining = _(teams).flattenDeep().value().length;
   }
 
+  if (peopleRemaining <= 5) {
+    return [_(teams).flattenDeep().value()];
+  }
+
+  if (peopleRemaining >= 6 && peopleRemaining <= 10) {
+    return _(_(teams).flattenDeep()).chunk(
+      peopleRemaining % 2 === 0 ? peopleRemaining / 2 : 4
+    ).value();
+  }
+
   while (peopleRemaining) {
     for (const team of teams) {
       // Choose a person, at random, from the current team
-      const idx = _.random(team.length - 1);
+      const idx = team.length > 1 ? _.random(team.length - 1) : 0;
 
       // We have three states of operation, depending on
       // the amount of teams remaining to dispurse into
